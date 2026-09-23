@@ -198,12 +198,16 @@
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
   }
 
+  /* Premium Hero Layout Update */
   .hero-wrapper {
     margin-top: 50px;
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 40px;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
     align-items: center;
+  }
+  .hero-text-content {
+    padding-right: 20px;
   }
   .hero-tag {
     display: inline-flex;
@@ -218,25 +222,168 @@
     margin-bottom: 20px;
   }
   .hero-title {
-    font-size: clamp(32px, 4vw, 48px);
-    font-weight: 700;
-    line-height: 1.2;
+    font-size: clamp(36px, 4vw, 54px);
+    font-weight: 800;
+    line-height: 1.15;
     color: var(--brand-primary);
-    margin: 0 0 20px 0;
+    margin: 0 0 24px 0;
   }
   .hero-desc {
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1.7;
     color: var(--text-muted);
-    margin-bottom: 30px;
+    margin-bottom: 35px;
+  }
+  
+  .hero-visuals {
+    position: relative;
+  }
+  
+  /* Image Zoom Wrapper */
+  .hero-img-wrapper {
+    width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+  }
+  
+  .hero-main-img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .hero-img-wrapper:hover .hero-main-img {
+    transform: scale(1.08);
+  }
+
+  /* ---------- Hero Slideshow (auto-rotating, Ken Burns) ---------- */
+  .hero-slideshow {
+    position: relative;
+    width: 100%;
+    height: 500px;
+  }
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.02);
+    animation: heroKenBurns 9s ease-in-out infinite alternate;
+  }
+  .hero-slide.active {
+    opacity: 1;
+    z-index: 2;
+  }
+  @keyframes heroKenBurns {
+    0% { transform: scale(1.02) translate(0, 0); }
+    100% { transform: scale(1.12) translate(-1.5%, -1.5%); }
+  }
+  .hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.32) 100%);
+    pointer-events: none;
+  }
+
+  .hero-slide-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    gap: 9px;
+  }
+  .hero-slide-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.45);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hero-slide-dot.active {
+    width: 26px;
+    background: #FFFFFF;
   }
 
   .hero-info-box {
+    margin-top: 22px;
     background: var(--brand-primary);
     color: #FFFFFF;
-    padding: 35px;
+    padding: 30px 32px;
     border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    position: relative;
+    overflow: hidden;
   }
+  .hero-info-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--brand-coral), var(--brand-orange), var(--brand-sage));
+  }
+  .hero-info-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .hero-info-head h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .hero-info-badge {
+    flex-shrink: 0;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1E272C;
+    background: var(--brand-sage);
+    padding: 6px 12px;
+    border-radius: 99px;
+  }
+  .hero-info-rows {
+    display: grid;
+    gap: 14px;
+  }
+  .hero-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.88);
+  }
+  .hero-info-row svg { flex-shrink: 0; margin-top: 2px; }
+  .hero-info-row strong {
+    display: block;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 1px;
+  }
+  .hero-info-row a { color: #FFFFFF; }
+  .hero-info-row a:hover { color: var(--brand-coral); }
 
   /* Services Grid */
   .services-grid {
@@ -258,10 +405,153 @@
     transform: translateY(-5px);
   }
 
+  /* ---------- NEW: Angebot Feature Rows (image + list) ---------- */
+  .feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    margin-top: 56px;
+    padding-top: 56px;
+    border-top: 1px solid var(--border-color);
+  }
+  .feature-row:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+  .feature-row.reverse .feature-img-col { order: 2; }
+  .feature-row.reverse .feature-text-col { order: 1; }
+
+  .feature-img-col {
+    position: relative;
+  }
+  .feature-img-wrapper {
+    width: 100%;
+    height: 340px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+  .feature-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .feature-img-wrapper:hover img { transform: scale(1.06); }
+
+  .feature-icon-badge {
+    position: absolute;
+    top: -18px;
+    left: 28px;
+    background: var(--brand-primary);
+    color: #FFFFFF;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+  }
+
+  .feature-text-col h3 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--brand-primary);
+    margin: 0 0 18px 0;
+    line-height: 1.25;
+  }
+  .feature-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 13px;
+  }
+  .feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--text-main);
+  }
+  .feature-list li::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--brand-coral);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .subsection-divider {
+    height: 4px;
+    width: 70px;
+    background: var(--brand-orange);
+    border-radius: 99px;
+    margin: 60px 0 40px;
+  }
+
+  /* Notfallmedizin dark block */
+  .notfall-wrapper {
+    background: var(--dark-surface);
+    color: #FFFFFF;
+    border-radius: 24px;
+    padding: 0;
+    margin-top: 35px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    align-items: stretch;
+  }
+  .notfall-img-col { min-height: 320px; }
+  .notfall-img-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .notfall-text-col {
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .notfall-text-col h2 {
+    font-size: 30px;
+    margin: 0 0 18px 0;
+    color: #FFFFFF;
+  }
+  .notfall-text-col p {
+    font-size: 15.5px;
+    line-height: 1.8;
+    color: #C7D0CE;
+    margin: 0 0 24px 0;
+    max-width: 480px;
+  }
+  .notfall-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #FFFFFF;
+  }
+  .notfall-phone span.dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--brand-coral);
+    box-shadow: 0 0 0 0 rgba(229,130,93,0.7);
+    animation: pulse 2s infinite;
+  }
+
   /* Team Grid & Doctor Cards */
   .team-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 30px;
   }
   .team-card-link {
@@ -279,7 +569,7 @@
     flex-direction: column;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .team-card-link:hover .team-member-card {
+  .team-member-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     border-color: var(--brand-coral);
@@ -297,6 +587,10 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .team-member-card:hover .doctor-img-wrapper img {
+    transform: scale(1.08);
   }
   .doctor-name {
     margin: 0 0 12px 0;
@@ -324,6 +618,62 @@
   }
   .team-card-link:hover .view-cv-btn {
     color: var(--brand-orange);
+  }
+
+  /* Staff Cards (Smaller for Nurses/MPA) */
+  .staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
+  .staff-member-card {
+    background: #FFFFFF;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .staff-member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+    border-color: var(--brand-sage);
+  }
+  .staff-img-wrapper {
+    width: 100%;
+    height: 180px; /* أصغر من الأطباء */
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #E2E8F0;
+    margin-bottom: 15px;
+  }
+  .staff-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .staff-member-card:hover .staff-img-wrapper img {
+    transform: scale(1.08); /* تكبير عند التأشير */
+  }
+  .staff-name {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--brand-coral);
+    line-height: 1.2;
+  }
+  .staff-details {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text-muted);
+    flex-grow: 1;
+  }
+  .staff-details p {
+    margin: 0 0 6px 0;
   }
 
   /* Dark Contact Block */
@@ -370,9 +720,16 @@
   }
 
   @media (max-width: 900px) {
-    .hero-wrapper, .anreise-cols { grid-template-columns: 1fr; }
+    .hero-wrapper, .anreise-cols { grid-template-columns: 1fr; gap: 30px; }
     .nav-links { display: none; }
     .exclusive-card, .dark-anreise-wrapper { padding: 30px; }
+    .feature-row { grid-template-columns: 1fr; gap: 24px; margin-top: 40px; padding-top: 40px; }
+    .feature-row.reverse .feature-img-col { order: 1; }
+    .feature-row.reverse .feature-text-col { order: 2; }
+    .feature-img-wrapper { height: 240px; }
+    .notfall-wrapper { grid-template-columns: 1fr; }
+    .notfall-img-col { min-height: 220px; }
+    .notfall-text-col { padding: 32px; }
   }
 </style>
 </head>
@@ -397,11 +754,11 @@
 
       <nav>
         <ul class="nav-links" id="mainNav">
-          <li><a href="#start" class="active">HOME</a></li>
-          <li><a href="#angebot">ANGEBOT</a></li>
-          <li><a href="#team">TEAM</a></li>
-          <li><a href="#kontakt">KONTAKT</a></li>
-          <li><a href="#zuweisende">FÜR ZUWEISENDE</a></li>
+          <li><a href="#start" class="nav-link active">HOME</a></li>
+          <li><a href="#angebot" class="nav-link">ANGEBOT</a></li>
+          <li><a href="#team" class="nav-link">TEAM</a></li>
+          <li><a href="#kontakt" class="nav-link">KONTAKT</a></li>
+          <li><a href="#zuweisende" class="nav-link">FÜR ZUWEISENDE</a></li>
         </ul>
       </nav>
 
@@ -418,12 +775,12 @@
   Termin Anfragen
 </a>
 
-<!-- SECTION 1: HOME -->
+<!-- SECTION 1: HOME (Premium Updated) -->
 <section id="start">
   <div class="container">
     <div class="exclusive-card reveal">
       <div class="hero-wrapper">
-        <div>
+        <div class="hero-text-content">
           <span class="hero-tag">Exzellente Medizin in Basel</span>
           <h1 class="hero-title">Ihre Gesundheit in besten Händen.</h1>
           <p class="hero-desc">Moderne Hausarztmedizin, spezialisierte Schmerztherapie und gezielte Sportrehabilitation unter einem Dach im MedCenter Volta.</p>
@@ -433,13 +790,49 @@
           </div>
         </div>
 
-        <div class="hero-info-box">
-          <h3 style="margin-top:0; font-size:20px;">Praxis Lothringerplatz</h3>
-          <p style="opacity:0.85; font-size:14px; line-height:1.6;">Lothringerplatz 2, 4056 Basel<br>Direkt am Voltaplatz gut erreichbar.</p>
-          <hr style="border:none; border-top:1px solid rgba(255,255,255,0.15); margin:20px 0;">
-          <div style="font-size:13px; opacity:0.9;">
-            <div>🕒 Mo–Fr: 08:00 – 17:30</div>
-            <div>📞 Tel: 061 322 61 11</div>
+        <div class="hero-visuals">
+          <div class="hero-img-wrapper">
+            <div class="hero-slideshow" id="heroSlideshow">
+              <div class="hero-slide active">
+                <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1600&auto=format&fit=crop" alt="MedCenter Volta Klinik">
+              </div>
+              <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1758691462123-8a17ae95d203?q=80&w=1600&auto=format&fit=crop" alt="Hausarztmedizin — Untersuchung">
+              </div>
+              <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1758691462651-611d730c5272?q=80&w=1600&auto=format&fit=crop" alt="Ärztin im MedCenter Volta">
+              </div>
+              <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?q=80&w=1600&auto=format&fit=crop" alt="Sportphysiotherapie — Untersuchung">
+              </div>
+              <div class="hero-slide-dots">
+                <button class="hero-slide-dot active" data-slide="0" aria-label="Bild 1"></button>
+                <button class="hero-slide-dot" data-slide="1" aria-label="Bild 2"></button>
+                <button class="hero-slide-dot" data-slide="2" aria-label="Bild 3"></button>
+                <button class="hero-slide-dot" data-slide="3" aria-label="Bild 4"></button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="hero-info-box">
+            <div class="hero-info-head">
+              <h3>Praxis Lothringerplatz</h3>
+              <span class="hero-info-badge">Basel</span>
+            </div>
+            <div class="hero-info-rows">
+              <div class="hero-info-row">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C12 21 4 15.5 4 9.5C4 6.5 6.5 4 9.5 4C10.9 4 12 4.7 12 4.7C12 4.7 13.1 4 14.5 4C17.5 4 20 6.5 20 9.5C20 15.5 12 21 12 21Z" stroke="#E5825D" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2" stroke="#E5825D" stroke-width="1.6"/></svg>
+                <div><strong>Lothringerplatz 2, 4056 Basel</strong>Direkt am Voltaplatz gut erreichbar</div>
+              </div>
+              <div class="hero-info-row">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.2" stroke="#889C97" stroke-width="1.6"/><path d="M12 8V12L14.6 14" stroke="#889C97" stroke-width="1.6" stroke-linecap="round"/></svg>
+                <div><strong>Mo–Fr: 08:00 – 17:30</strong>Öffnungszeiten der Praxis</div>
+              </div>
+              <div class="hero-info-row">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3H9L10.5 7L8.5 8.5C9.3 10.4 10.6 11.7 12.5 12.5L14 10.5L18 12V15C18 16.1 17.1 17 16 17C9.9 17 5 12.1 5 6C5 4.9 5.9 3 6 3Z" stroke="#E5825D" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                <div><strong><a href="tel:+41613226111">061 322 61 11</a></strong>Termine &amp; Auskunft</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -447,20 +840,68 @@
   </div>
 </section>
 
-<!-- SECTION 2: ANGEBOT -->
+<!-- SECTION 2: ANGEBOT (Redesigned) -->
 <section id="angebot">
   <div class="container">
+
+    <!-- Intro Card -->
     <div class="exclusive-card reveal">
       <span class="hero-tag">Fachbereiche</span>
-      <h2 style="font-size:32px; margin-top:5px; color:var(--brand-primary);">Unser Medizinisches Angebot</h2>
-      <p style="color:var(--text-muted); max-width:600px;">Ganzheitliche Betreuung durch interdisziplinäre Zusammenarbeit unserer Fachärzte und Therapeuten.</p>
+      <h2 style="font-size:32px; margin-top:5px; color:var(--brand-primary);">Wir bieten Ihnen eine umfassende Behandlung an</h2>
+      <p style="color:var(--text-muted); max-width:640px; margin:0;">Ganzheitliche Betreuung durch interdisziplinäre Zusammenarbeit unserer Fachärzte und Therapeuten — von der Grundversorgung bis zur apparativen Diagnostik.</p>
+
+      <!-- Feature Row 1: Hausarztmedizin und Innere Medizin -->
+      <div class="feature-row">
+        <div class="feature-img-col">
+          <div class="feature-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1758691462123-8a17ae95d203?q=80&w=1400&auto=format&fit=crop" alt="Hausarztmedizin und Innere Medizin">
+          </div>
+          <div class="feature-icon-badge">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C12 21 4 15.5 4 9.5C4 6.5 6.5 4 9.5 4C10.9 4 12 4.7 12 4.7C12 4.7 13.1 4 14.5 4C17.5 4 20 6.5 20 9.5C20 15.5 12 21 12 21Z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="feature-text-col">
+          <h3>Hausarztmedizin und&nbsp;Innere&nbsp;Medizin</h3>
+          <ul class="feature-list">
+            <li>Diagnostik und Behandlung von akuten und chronischen internistischen Erkrankungen</li>
+            <li>Checkup-Untersuchungen</li>
+            <li>Gesundheitsberatung</li>
+            <li>Desensibilisierung (in Zusammenarbeit mit einem Allergologen)</li>
+            <li>Abklärung von Fahreignung</li>
+            <li>Wundversorgung</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Feature Row 2: Apparative Untersuchungen -->
+      <div class="feature-row reverse">
+        <div class="feature-img-col">
+          <div class="feature-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1516069677018-378515003435?q=80&w=1400&auto=format&fit=crop" alt="Apparative Untersuchungen">
+          </div>
+          <div class="feature-icon-badge">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H6L8 6L12 18L14 12H16.5L18 15L19.5 12H21" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="feature-text-col">
+          <h3>Apparative Untersuchungen</h3>
+          <ul class="feature-list">
+            <li>EKG, Langzeit-EKG</li>
+            <li>Röntgen</li>
+            <li>24-Stunden-Blutdruckmessung</li>
+            <li>Lungenfunktion</li>
+            <li>Schlafanalyse (nächtliche Pulsoxymetrie)</li>
+            <li>Blutentnahmen, Laboranalysen inkl. Notfalllabor</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Compact overview: further specialties -->
+      <div class="subsection-divider"></div>
+      <h3 style="font-size:20px; color:var(--brand-primary); margin:0 0 4px;">Weitere Spezialgebiete</h3>
+      <p style="color:var(--text-muted); font-size:14px; margin:0 0 10px; max-width:600px;">Ergänzend zur Grundversorgung und Diagnostik bieten wir gezielte Therapie bei Schmerzen und im Sport.</p>
 
       <div class="services-grid">
-        <div class="service-card">
-          <h3 style="margin:0 0 10px; color:var(--brand-primary);">Hausarztmedizin</h3>
-          <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin:0;">Umfassende Grundversorgung, Vorsorgeuntersuchungen und kontinuierliche Betreuung.</p>
-        </div>
-
         <div class="service-card">
           <h3 style="margin:0 0 10px; color:var(--brand-primary);">Schmerzmedizin</h3>
           <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin:0;">Spezialisierte Abklärung und moderne Therapiekonzepte bei komplexen Schmerzzuständen.</p>
@@ -472,6 +913,20 @@
         </div>
       </div>
     </div>
+
+    <!-- Notfallmedizin — dark full-bleed block -->
+    <div class="notfall-wrapper reveal">
+      <div class="notfall-img-col">
+        <img src="https://images.unsplash.com/photo-1609840534195-e6385ca0d10a?q=80&w=1200&auto=format&fit=crop" alt="Notfallmedizin — Wundversorgung">
+      </div>
+      <div class="notfall-text-col">
+        <span class="hero-tag" style="background:rgba(255,255,255,0.08); color:#C7D0CE;">Für den Ernstfall</span>
+        <h2>Notfallmedizin</h2>
+        <p>Wir kümmern uns um Ihre Notfälle. Wundversorgungen können im Praxis-OP vorgenommen werden. Rufen Sie uns zu den Öffnungszeiten an:</p>
+        <a href="tel:+41613226111" class="notfall-phone"><span class="dot"></span>061 322 61 11</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -488,15 +943,14 @@
         <a href="dr-amjad-mallisho.html" class="team-card-link">
           <div class="team-member-card">
             <div class="doctor-img-wrapper">
-              <img src="images/dr-amjad-mallisho.jpg" alt="Dr. Amjad Mallisho" onerror="this.src='https://via.placeholder.com/300x350?text=Dr.+Amjad+Mallisho'">
+              <img src="images/dr-amjad-mallisho.jpg" alt="Dr. Amjad Mallisho" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
             </div>
             <h3 class="doctor-name">Dr. Amjad Mallisho</h3>
             <div class="doctor-details">
               <p>Facharzt Physikalische Medizin und Rehabilitation</p>
               <p>Allgemeine Innere Medizin</p>
-              <p>Interventionelle Schmerztherapie (SSIPM – Swiss Society for Interventional Pain Management)</p>
+              <p>Interventionelle Schmerztherapie (SSIPM)</p>
               <p>Zusatzqualifikation Sportmedizin (DGSM)</p>
-              <p>Vertrauensarzt – Verkehrsmedizinische Untersuchungen Stufe 1, 2 und 3</p>
             </div>
             <span class="view-cv-btn">Mehr erfahren / CV &rarr;</span>
           </div>
@@ -506,7 +960,7 @@
         <a href="dr-elif-keser.html" class="team-card-link">
           <div class="team-member-card">
             <div class="doctor-img-wrapper">
-              <img src="images/dr-elif-keser.jpg" alt="Dr. med. Elif Keser" onerror="this.src='https://via.placeholder.com/300x350?text=Dr.+med.+Elif+Keser'">
+              <img src="images/dr-elif-keser.jpg" alt="Dr. med. Elif Keser" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
             </div>
             <h3 class="doctor-name">Dr. med. Elif Keser</h3>
             <div class="doctor-details">
@@ -520,7 +974,7 @@
         <a href="dr-peter-osterwalder.html" class="team-card-link">
           <div class="team-member-card">
             <div class="doctor-img-wrapper">
-              <img src="images/dr-peter-osterwalder.jpg" alt="Dr. med. Peter Osterwalder" onerror="this.src='https://via.placeholder.com/300x350?text=Dr.+med.+Peter+Osterwalder'">
+              <img src="images/dr-peter-osterwalder.jpg" alt="Dr. med. Peter Osterwalder" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
             </div>
             <h3 class="doctor-name">Dr. med. Peter Osterwalder</h3>
             <div class="doctor-details">
@@ -534,18 +988,79 @@
         <a href="dr-tobias-lumpp.html" class="team-card-link">
           <div class="team-member-card">
             <div class="doctor-img-wrapper">
-              <img src="images/dr-tobias-lumpp.jpg" alt="Dr. med. Tobias Lumpp" onerror="this.src='https://via.placeholder.com/300x350?text=Dr.+med.+Tobias+Lumpp'">
+              <img src="images/dr-tobias-lumpp.jpg" alt="Dr. med. Tobias Lumpp" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
             </div>
             <h3 class="doctor-name">Dr. med. Tobias Lumpp</h3>
             <div class="doctor-details">
               <p>Facharzt für Allgemeinmedizin</p>
               <p>Facharzt für Arbeitsmedizin FMH</p>
               <p>Zusatzbezeichnung Notfallmedizin</p>
-              <p>Praktischer Arzt</p>
             </div>
             <span class="view-cv-btn">Mehr erfahren / CV &rarr;</span>
           </div>
         </a>
+      </div>
+
+      <!-- NEW SECTION: PRAXISTEAM (تصميم الكروت الصغير) -->
+      <h2 style="font-size:28px; margin-top:60px; margin-bottom:30px; color:var(--brand-primary); border-top: 1px solid var(--border-color); padding-top: 40px;">Praxisteam</h2>
+      
+      <div class="staff-grid">
+        <!-- Frau Alev Yavuz -->
+        <div class="staff-member-card">
+          <div class="staff-img-wrapper">
+            <img src="images/alev-yavuz.jpg" alt="Frau Alev Yavuz" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
+          </div>
+          <h3 class="staff-name">Frau Alev Yavuz</h3>
+          <div class="staff-details">
+            <p><strong>MPA-Teamleitung</strong></p>
+            <p>Berufsbildnerin</p>
+            <p>MPK i.A.</p>
+          </div>
+        </div>
+
+        <!-- Frau Mihrab Kilic -->
+        <div class="staff-member-card">
+          <div class="staff-img-wrapper">
+            <img src="images/mihrab-kilic.jpg" alt="Frau Mihrab Kilic" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
+          </div>
+          <h3 class="staff-name">Frau Mihrab Kilic</h3>
+          <div class="staff-details">
+            <p>Arztsekretärin</p>
+          </div>
+        </div>
+
+        <!-- Frau Katrin Nadile -->
+        <div class="staff-member-card">
+          <div class="staff-img-wrapper">
+            <img src="images/katrin-nadile.jpg" alt="Frau Katrin Nadile" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
+          </div>
+          <h3 class="staff-name">Frau Katrin Nadile</h3>
+          <div class="staff-details">
+            <p>MPA</p>
+          </div>
+        </div>
+
+        <!-- Frau Jacqueline Michienzi -->
+        <div class="staff-member-card">
+          <div class="staff-img-wrapper">
+            <img src="images/jacqueline-michienzi.jpg" alt="Frau Jacqueline Michienzi" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
+          </div>
+          <h3 class="staff-name">Frau Jacqueline Michienzi</h3>
+          <div class="staff-details">
+            <p>MPA</p>
+          </div>
+        </div>
+
+        <!-- Frau Leticia Sande Fondo -->
+        <div class="staff-member-card">
+          <div class="staff-img-wrapper">
+            <img src="images/leticia-sande.jpg" alt="Frau Leticia Sande Fondo" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'350\' style=\'background:%23E2E8F0\'%3E%3Cpath fill=\'%23A0AEC0\' d=\'M150 165a35 35 0 100-70 35 35 0 000 70zm0 15c-35 0-70 17.5-70 52.5v17.5h140v-17.5c0-35-35-52.5-70-52.5z\'/%3E%3C/svg%3E';">
+          </div>
+          <h3 class="staff-name">Frau Leticia Sande Fondo</h3>
+          <div class="staff-details">
+            <p>Reinigung</p>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -584,48 +1099,29 @@
     <!-- Complete Arrival Information Panel -->
     <div class="dark-anreise-wrapper reveal">
       <div class="anreise-cols">
-        
-        <!-- Anreise mit dem Auto -->
         <div>
           <h3 style="font-size:22px; margin-top:0; margin-bottom:24px; color:#FFFFFF;">Anreise mit dem Auto</h3>
-          
           <div style="margin-bottom:24px;">
             <h4 style="color:var(--brand-sage); font-size:16px; margin:0 0 8px 0;">Autobahn A2</h4>
-            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">
-              Ausfahrt Basel-St. Johann.<br>
-              Geradeaus über den Voltaplatz zum Kreisel Lothringerplatz. Haltemöglichkeit zum Aussteigen vor der Praxis.
-            </p>
+            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">Ausfahrt Basel-St. Johann.<br>Geradeaus über den Voltaplatz zum Kreisel Lothringerplatz.</p>
           </div>
-
           <div>
             <h4 style="color:var(--brand-sage); font-size:16px; margin:0 0 8px 0;">Parkplätze</h4>
-            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">
-              Parkhaus Coop Voltacenter direkt vis-à-vis.
-            </p>
+            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">Parkhaus Coop Voltacenter direkt vis-à-vis.</p>
           </div>
         </div>
 
-        <!-- Anreise mit Öffentlichen Verkehrsmittel -->
         <div>
-          <h3 style="font-size:22px; margin-top:0; margin-bottom:24px; color:#FFFFFF;">Anreise mit Öffentlichen Verkehrsmittel</h3>
-          
+          <h3 style="font-size:22px; margin-top:0; margin-bottom:24px; color:#FFFFFF;">Anreise mit ÖV</h3>
           <div style="margin-bottom:24px;">
             <h4 style="color:var(--brand-sage); font-size:16px; margin:0 0 8px 0;">Tramstation Voltaplatz</h4>
-            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">
-              Tramlinien 1, 11 und 21<br>
-              Von dort ca. 100 m zu Fuss entlang der Voltastrasse Richtung Bahnhof St. Johann. Die Praxis liegt direkt am Kreisel.
-            </p>
+            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">Tramlinien 1, 11 und 21</p>
           </div>
-
           <div>
             <h4 style="color:var(--brand-sage); font-size:16px; margin:0 0 8px 0;">Tramstation Bahnhof St. Johann</h4>
-            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">
-              Tram 1, 21<br>
-              Um das Voltacenter herumgehen bis zum Kreisel.
-            </p>
+            <p style="color:#A0AEC0; font-size:14px; line-height:1.6; margin:0;">Tram 1, 21</p>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -640,27 +1136,10 @@
 <section id="zuweisende">
   <div class="container">
     <div class="exclusive-card reveal" style="text-align:center;">
-      
-      <div style="display:inline-flex; flex-direction:column; align-items:center; margin-bottom:20px;">
-        <svg width="70" height="70" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 90 20 L 160 98 L 110 120 Z" fill="#E5825D"/>
-          <path d="M 96 103 L 60 131 L 111 157 Z" fill="#D9623B"/>
-          <path d="M 184 62 L 120 178 L 112 129 Z" fill="#889C97"/>
-        </svg>
-        <span style="font-size: 18px; font-weight: 400; letter-spacing: 0.2em; color: var(--brand-primary); margin-top: 8px;">MEDCENTER</span>
-        <span style="font-size: 11px; font-weight: 400; letter-spacing: 0.35em; color: var(--text-muted);">VOLTA</span>
-      </div>
-
       <h2 style="font-size:28px; margin-top:10px; color:var(--brand-primary);">Für Zuweisende Kollegen</h2>
-      
       <p style="color:var(--text-muted); line-height:1.7; font-size:15px; max-width:800px; margin:0 auto 20px;">
-        Im MedCenter Volta klären wir auf Zuweisung sämtliche Erkrankungen aus den Bereichen Schmerzmedizin und Sportmedizin schnell und unkompliziert ab und behandeln diese bei Bedarf – ganz nach Ihrem Auftrag.
+        Im MedCenter Volta klären wir auf Zuweisung sämtliche Erkrankungen aus den Bereichen Schmerzmedizin und Sportmedizin schnell und unkompliziert ab.
       </p>
-
-      <p style="color:var(--text-muted); line-height:1.7; font-size:15px; max-width:800px; margin:0 auto;">
-        Anmeldungen per Telefon (<strong>061 322 61 11</strong>), Fax (<strong>061 322 61 20</strong>), oder HIN-Mail (<a href="mailto:medcentervolta@hin.ch" style="color:var(--brand-orange); font-weight:700;">medcentervolta@hin.ch</a>).
-      </p>
-
     </div>
   </div>
 </section>
@@ -670,28 +1149,13 @@
   <div class="container">
     <div class="footer-cols">
       <div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-          <svg width="32" height="32" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 90 20 L 160 98 L 110 120 Z" fill="#E5825D"/>
-            <path d="M 96 103 L 60 131 L 111 157 Z" fill="#D9623B"/>
-            <path d="M 184 62 L 120 178 L 112 129 Z" fill="#889C97"/>
-          </svg>
-          <span style="color:#FFF; font-size:14px; letter-spacing:0.15em;">MEDCENTER VOLTA</span>
-        </div>
         <p>Lothringerplatz 2<br>4056 Basel</p>
       </div>
-
-      <div>
-        <h5>TERMINVEREINBARUNG</h5>
-        <p style="color:var(--brand-coral);">Vereinbarte und nicht 24 Stunden vorher abgesagte Termine müssen verrechnet werden.</p>
-      </div>
-
       <div>
         <h5>ÖFFNUNGSZEITEN</h5>
-        <p>Montag – Mittwoch, Freitag: 08:00 – 12:00 | 13:30 – 17:30<br>Donnerstag: 08:00 – 12:00</p>
+        <p>Montag – Freitag: 08:00 – 17:30</p>
       </div>
     </div>
-
     <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top:20px; font-size:12px; display:flex; justify-content:space-between;">
       <div>© 2026 JMK Medizin AG — Alle Rechte vorbehalten.</div>
     </div>
@@ -699,6 +1163,44 @@
 </footer>
 
 <script>
+  // Hero Slideshow — تدوير تلقائي للصور
+  (function () {
+    const root = document.getElementById('heroSlideshow');
+    if (!root) return;
+    const slides = root.querySelectorAll('.hero-slide');
+    const dots = root.querySelectorAll('.hero-slide-dot');
+    let current = 0;
+    let timer;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = index;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function next() {
+      goTo((current + 1) % slides.length);
+    }
+
+    function startAuto() {
+      clearInterval(timer);
+      timer = setInterval(next, 5000);
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        if (i === current) return;
+        goTo(i);
+        startAuto();
+      });
+    });
+
+    startAuto();
+  })();
+
+  // تأثير الظهور (Reveal Animation)
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -706,6 +1208,36 @@
     });
   }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
+
+  // نظام تفعيل اللون في شريط التنقل (Navigation Active State)
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  // تحديث اللون عند الضغط
+  navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      navLinks.forEach(nav => nav.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // تحديث اللون تلقائياً عند النزول والصعود في الموقع (Scroll Spy)
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (scrollY >= sectionTop - 150) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href').includes(current)) {
+        link.classList.add('active');
+      }
+    });
+  });
 </script>
 
 </body>
